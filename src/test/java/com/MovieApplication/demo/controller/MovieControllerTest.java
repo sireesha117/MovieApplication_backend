@@ -32,25 +32,23 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class MovieControllerTest {
 	@Mock
 	private MovieServiceImpl movieService;
-	
+
 	@InjectMocks
 	private MovieController movieS;
-	
+
 	@Autowired
 	private MockMvc mockMvc;
-	
+
 	@BeforeEach
-	public void init()
-	{
+	public void init() {
 		MockitoAnnotations.openMocks(this);
 		mockMvc = MockMvcBuilders.standaloneSetup(movieS).build();
 	}
-	
+
 	List<Movie> movieList = new ArrayList<Movie>();
-	
+
 	@Test
-	public void getAllMoviesSuccess() throws Exception
-	{
+	public void getAllMoviesSuccess() throws Exception {
 		Movie movie = new Movie();
 		movie.setMovieId(1);
 		movie.setMovieName("2018");
@@ -59,49 +57,20 @@ public class MovieControllerTest {
 		movie.setSeatsAvalible(100);
 		movie.setShowTime("09:30AM");
 		movie.setPrice(100);
-		
+
 		movieList.add(movie);
 		when(movieService.getAllMovies()).thenReturn(movieList);
-		
+
 		List<Movie> mList = movieService.getAllMovies();
 		assertEquals(movieList, mList);
-		
-mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/getAllMovies").contentType(MediaType.APPLICATION_JSON))
-		.andExpect(MockMvcResultMatchers.status().isOk());
-		
+
+		mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/getAllMovies").contentType(MediaType.APPLICATION_JSON))
+				.andExpect(MockMvcResultMatchers.status().isOk());
+
 	}
-	
-	
-	
+
 	@Test
-	public void getMovieByNameSuccess() throws Exception
-	{
-	    Movie movie = new Movie();
-	    movie.setMovieId(1);
-	    movie.setMovieName("2018");
-	    movie.setTheatreName("AMB");
-	    movie.setSeats(100);
-	    movie.setSeatsAvalible(100);
-	    movie.setShowTime("09:30AM");
-	    movie.setPrice(100);
-
-	    List<Movie> movieList = new ArrayList<Movie>();
-	    movieList.add(movie);
-
-	    when(movieService.getMovieByName("2018")).thenReturn(movieList);
-
-	    List<Movie> m = movieService.getMovieByName("2018");
-	    assertEquals(movieList, m);
-
-	    mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/findmovieByName/2018").contentType(MediaType.APPLICATION_JSON))
-	            .andExpect(MockMvcResultMatchers.status().isOk());
-	}
-	
-	
-	
-	@Test
-	public void addMovieSuccess() throws Exception
-	{
+	public void getMovieByNameSuccess() throws Exception {
 		Movie movie = new Movie();
 		movie.setMovieId(1);
 		movie.setMovieName("2018");
@@ -110,16 +79,41 @@ mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/getAllMovies").contentType(M
 		movie.setSeatsAvalible(100);
 		movie.setShowTime("09:30AM");
 		movie.setPrice(100);
-		
+
+		List<Movie> movieList = new ArrayList<Movie>();
+		movieList.add(movie);
+
+		when(movieService.getMovieByName("2018")).thenReturn(movieList);
+
+		List<Movie> m = movieService.getMovieByName("2018");
+		assertEquals(movieList, m);
+
+		mockMvc.perform(
+				MockMvcRequestBuilders.get("/api/v1/findmovieByName/2018").contentType(MediaType.APPLICATION_JSON))
+				.andExpect(MockMvcResultMatchers.status().isOk());
+	}
+
+	@Test
+	public void addMovieSuccess() throws Exception {
+		Movie movie = new Movie();
+		movie.setMovieId(1);
+		movie.setMovieName("2018");
+		movie.setTheatreName("AMB");
+		movie.setSeats(100);
+		movie.setSeatsAvalible(100);
+		movie.setShowTime("09:30AM");
+		movie.setPrice(100);
+
 		movieList.add(movie);
 		when(movieService.addMovie(any())).thenReturn(movie);
-		
-		assertEquals(1,movieList.size());
-        mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/addMovie").contentType(MediaType.APPLICATION_JSON)
-		.content(new ObjectMapper().writeValueAsString(movie))).andExpect(MockMvcResultMatchers.status().isCreated());
-		
+
+		assertEquals(1, movieList.size());
+		mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/addMovie").contentType(MediaType.APPLICATION_JSON)
+				.content(new ObjectMapper().writeValueAsString(movie)))
+				.andExpect(MockMvcResultMatchers.status().isCreated());
+
 	}
-	
+
 	@Test
 	public void addMovieFailure() throws Exception
 	{
@@ -133,6 +127,7 @@ mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/addMovie").contentType(Medi
 .content(new ObjectMapper().writeValueAsString(u1))).andExpect(MockMvcResultMatchers.status().is4xxClientError());
 		
 	}
+
 	@Test
     public void deleteMovieByIds() throws Exception {   
 		when(movieService.deleteMovie(1)).thenReturn(true);

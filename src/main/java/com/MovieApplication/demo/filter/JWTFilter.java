@@ -15,30 +15,29 @@ import jakarta.servlet.http.HttpServletResponse;
 
 public class JWTFilter extends GenericFilterBean {
 	@Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
-            throws IOException, ServletException {
-        HttpServletRequest httpReq = (HttpServletRequest) request;
-        HttpServletResponse httpRes = (HttpServletResponse) response;
-        
-        httpRes.setHeader("Access-Control-Allow-Origin", "*");
-        httpRes.setHeader("Access-Control-Allow-Methods", "*");
-        httpRes.setHeader("Access-Control-Allow-Headers", "*");
+	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+			throws IOException, ServletException {
+		HttpServletRequest httpReq = (HttpServletRequest) request;
+		HttpServletResponse httpRes = (HttpServletResponse) response;
 
-        if ("OPTIONS".equals(httpReq.getMethod())) {
-            httpRes.setStatus(HttpServletResponse.SC_OK);
-        } else {
-            String authHeader = httpReq.getHeader("authorization");
-            if (authHeader == null || !authHeader.startsWith("Bearer")) {
-                throw new ServletException("Missing or invalid authentication header");
-            }
+		httpRes.setHeader("Access-Control-Allow-Origin", "*");
+		httpRes.setHeader("Access-Control-Allow-Methods", "*");
+		httpRes.setHeader("Access-Control-Allow-Headers", "*");
 
-            String jwtToken = authHeader.substring(7);
-            Claims claims = Jwts.parser().setSigningKey("secret key").parseClaimsJws(jwtToken).getBody();
+		if ("OPTIONS".equals(httpReq.getMethod())) {
+			httpRes.setStatus(HttpServletResponse.SC_OK);
+		} else {
+			String authHeader = httpReq.getHeader("authorization");
+			if (authHeader == null || !authHeader.startsWith("Bearer")) {
+				throw new ServletException("Missing or invalid authentication header");
+			}
 
-            httpReq.setAttribute("username", claims);
-            chain.doFilter(request, response);
-        }
-    }
+			String jwtToken = authHeader.substring(7);
+			Claims claims = Jwts.parser().setSigningKey("secret key").parseClaimsJws(jwtToken).getBody();
 
+			httpReq.setAttribute("username", claims);
+			chain.doFilter(request, response);
+		}
+	}
 
 }

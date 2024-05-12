@@ -32,48 +32,43 @@ public class TicketControllerTest {
 	private TicketServiceImpl ticketService;
 	@Mock
 	private MovieServiceImpl movieService;
-	
-	
+
 	@InjectMocks
 	private TicketController ticketC;
-	
+
 	@Autowired
 	private MockMvc mockMvc;
-	
+
 	@BeforeEach
-	public void init()
-	{
+	public void init() {
 		MockitoAnnotations.openMocks(this);
 		mockMvc = MockMvcBuilders.standaloneSetup(ticketC).build();
 	}
-	
+
 	List<Ticket> ticketList = new ArrayList<Ticket>();
-	
+
 	@Test
-	public void getAllTicketsSuccess() throws Exception
-	{
+	public void getAllTicketsSuccess() throws Exception {
 		Ticket ticket = new Ticket();
-		
+
 		ticket.setMovie_id_fk(1);
 		ticket.setUser_name_fk("John");
 		ticket.setIssueAt("2024-03-28");
 		ticket.setNo_of_tickets(2);
 		ticket.setShowTime("09:30AM");
 		ticket.setTotalPrice(200);
-		
+
 		ticketList.add(ticket);
 		when(ticketService.getAllMovieTickets()).thenReturn(ticketList);
-		
+
 		List<Ticket> tList = ticketService.getAllMovieTickets();
 		assertEquals(ticketList, tList);
-		
-mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/ticket/alltickets").contentType(MediaType.APPLICATION_JSON))
-		.andExpect(MockMvcResultMatchers.status().isOk());
-		
-	}
-		
 
-	
+		mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/ticket/alltickets").contentType(MediaType.APPLICATION_JSON))
+				.andExpect(MockMvcResultMatchers.status().isOk());
+
+	}
+
 	@Test
 	public void findTicketSuccess() throws Exception
 	{

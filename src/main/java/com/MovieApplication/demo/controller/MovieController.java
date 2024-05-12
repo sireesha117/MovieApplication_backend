@@ -21,65 +21,68 @@ import com.MovieApplication.demo.service.MovieService;
 import com.MovieApplication.demo.service.TicketService;
 
 import jakarta.transaction.Transactional;
+
 @RestController
 @RequestMapping("api/v1")
 @CrossOrigin(origins = "*")
 public class MovieController {
 	@Autowired
-	private MovieService ms; 	
+	private MovieService ms;
 	@Autowired
 	private TicketService ts;
-	
-	//@CrossOrigin(origins = "http://localhost:4200")
+
 	@PostMapping("/addMovie")
-	public ResponseEntity<?> addMovie( @RequestBody Movie movie) throws DuplicateMovieIdExceptions
-	{
+	public ResponseEntity<?> addMovie(@RequestBody Movie movie) throws DuplicateMovieIdExceptions {
 		
-		if(ms.addMovie(movie)!=null)
-		{
+		if (ms.addMovie(movie) != null) {
+
 			return new ResponseEntity<Movie>(movie, HttpStatus.CREATED);
 		}
+
 		return new ResponseEntity<String>("movie is null", HttpStatus.NO_CONTENT);
 	}
-	@PutMapping("/updatemovie")//done
-	public ResponseEntity<?> updateMovie(@RequestBody Movie movie){
-		if(ms.updateMovie(movie)) {
-			return new ResponseEntity<Movie>(movie,HttpStatus.CREATED);
+
+	@PutMapping("/updatemovie") // done
+	public ResponseEntity<?> updateMovie(@RequestBody Movie movie) {
+		
+		if (ms.updateMovie(movie)) {
+			return new ResponseEntity<Movie>(movie, HttpStatus.CREATED);
 		}
 		return new ResponseEntity<String>("movie does not exists", HttpStatus.NO_CONTENT);
 	}
-	@GetMapping("/getAllMovies")//done
-	public ResponseEntity<?> getMovies() 
-	{
+
+	@GetMapping("/getAllMovies") // done
+	public ResponseEntity<?> getMovies() {
 		List<Movie> movielist = ms.getAllMovies();
-		if(movielist!=null)
-		{
+		if (movielist != null) {
 			return new ResponseEntity<List<Movie>>(movielist, HttpStatus.OK);
 		}
 		return new ResponseEntity<String>("No shows Avalible", HttpStatus.NO_CONTENT);
-		
+
 	}
-	
-	
+
+	@Transactional
 	@DeleteMapping("/delete/{mid}")
-	public ResponseEntity<?> deleteMovieById(@PathVariable("mid") int mid) //done
-	{
-		
-		if(ms.deleteMovie(mid) && ts.deleteTicket(mid))
-		{
-			return new ResponseEntity<>("Movie Deleted",HttpStatus.OK);
-		}
-		return new ResponseEntity<>(HttpStatus.OK);
+	public ResponseEntity<?> deleteMovieById(@PathVariable("mid") int mid) {
+	    boolean ticketsDeleted = ts.deleteTicket(mid);
+	    boolean movieDeleted = ms.deleteMovie(mid);
+
+	    if (movieDeleted) {
+	        return new ResponseEntity<>("Movie Deleted", HttpStatus.OK);
+	    } else {
+	        return new ResponseEntity<>("Movie Not Found", HttpStatus.NOT_FOUND);
+	    }
 	}
-	@GetMapping("/findmovie/{mid}")//done
-	public ResponseEntity<?> findMovie(@PathVariable("mid") int mid){
-		return new ResponseEntity<Movie>(ms.getMovieById(mid),HttpStatus.OK);
+
+	@GetMapping("/findmovie/{mid}")
+	public ResponseEntity<?> findMovie(@PathVariable("mid") int mid) {
+		return new ResponseEntity<Movie>(ms.getMovieById(mid), HttpStatus.OK);
 	}
-	@GetMapping("/findmovieByName/{mname}")//done
-	public ResponseEntity<?> findMovieByName(@PathVariable("mname") String mname){
-		return new ResponseEntity<List<Movie>>(ms.getMovieByName(mname),HttpStatus.OK);
-		
+
+	@GetMapping("/findmovieByName/{mname}")
+	public ResponseEntity<?> findMovieByName(@PathVariable("mname") String mname) {
+		return new ResponseEntity<List<Movie>>(ms.getMovieByName(mname), HttpStatus.OK);
+
 	}
-	
 
 }

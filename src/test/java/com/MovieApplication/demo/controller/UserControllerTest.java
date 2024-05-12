@@ -26,44 +26,42 @@ import com.MovieApplication.demo.service.impl.UserServiceImpl;
 @AutoConfigureMockMvc
 @SpringBootTest
 public class UserControllerTest {
-	
+
 	@Mock
 	private UserServiceImpl userService;
-	
+
 	@InjectMocks
 	private UserController userC;
-	
+
 	@Autowired
 	private MockMvc mockMvc;
-	
 
 	@BeforeEach
-	public void init()
-	{
+	public void init() {
 		MockitoAnnotations.openMocks(this);
 		mockMvc = MockMvcBuilders.standaloneSetup(userC).build();
 	}
+
 	List<User> userList = new ArrayList<User>();
-	
+
 	@Test
-	public void getAllUsersSuccess() throws Exception
-	{
+	public void getAllUsersSuccess() throws Exception {
 		User user = new User();
-		
+
 		user.setUsername("admin");
 		user.setPetname("dog");
 		user.setEmail("admin@gmail.com");
 		user.setPassword("admin");
-		
+
 		userList.add(user);
 		when(userService.getAllUsers()).thenReturn(userList);
-		
+
 		List<User> uList = userService.getAllUsers();
 		assertEquals(userList, uList);
-		
-mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/getAllUsers").contentType(MediaType.APPLICATION_JSON))
-		.andExpect(MockMvcResultMatchers.status().isOk());
-		
+
+		mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/getAllUsers").contentType(MediaType.APPLICATION_JSON))
+				.andExpect(MockMvcResultMatchers.status().isOk());
+
 	}
-	
+
 }

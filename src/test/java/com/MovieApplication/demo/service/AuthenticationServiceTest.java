@@ -17,59 +17,61 @@ import com.MovieApplication.demo.service.impl.UserServiceImpl;
 
 public class AuthenticationServiceTest {
 
-    @Mock
-    private UserRepository userRepository;
+	@Mock
+	private UserRepository userRepository;
 
-    @InjectMocks
-    private UserServiceImpl userService;
+	@InjectMocks
+	private UserServiceImpl userService;
 
-    @BeforeEach
-    public void init() {
-        MockitoAnnotations.openMocks(this);
-    }
+	@BeforeEach
+	public void init() {
+		MockitoAnnotations.openMocks(this);
+	}
 
-    @Test
-    public void addUserSuccess() {
-        User user = new User();
-        user.setUsername("admin");
-        user.setPetname("dog");
-        user.setEmail("admin@gmail.com");
-        user.setPassword("admin");
+	@Test
+	public void addUserSuccess() {
+		User user = new User();
+		user.setUsername("admin");
+		user.setPetname("dog");
+		user.setEmail("admin@gmail.com");
+		user.setPassword("admin");
 
-        when(userRepository.save(any())).thenReturn(user);
+		when(userRepository.save(any())).thenReturn(user);
 
-        User savedUser = userService.addUser(user);
-        assertEquals(user.getUsername(), savedUser.getUsername());
-    }
+		User savedUser = userService.addUser(user);
+		assertEquals(user.getUsername(), savedUser.getUsername());
+	}
 
-    @Test
+	@Test
     public void addUserFailure() {
         when(userRepository.save(any())).thenReturn(null);
 
         User savedUser = userService.addUser(null);
         assertEquals(null, savedUser);
     }
-    @Test
-    void testLoginUser() {
-        String username = "testuser";
-        String password = "testpassword";
-        String userRole = "user";
 
-        User mockUser = new User();
-        when(userRepository.validateUser(username, password, userRole)).thenReturn(mockUser);
+	@Test
+	void testLoginUser() {
+		String username = "testuser";
+		String password = "testpassword";
+		String userRole = "user";
 
-        assertTrue(userService.loginUser(username, password, userRole));
-    }
-    @Test
-    void testForgotPassword() {
-        String username = "testuser";
-        String petname = "fluffy";
+		User mockUser = new User();
+		when(userRepository.validateUser(username, password, userRole)).thenReturn(mockUser);
 
-        User mockUser = new User();
-        mockUser.setId(42); // Set a sample user ID
-        when(userRepository.RequestValue(username, petname)).thenReturn(mockUser);
+		assertTrue(userService.loginUser(username, password, userRole));
+	}
 
-        int userId = userService.forgotPassword(username, petname);
-        assertEquals(42, userId);
-    }
+	@Test
+	void testForgotPassword() {
+		String username = "testuser";
+		String petname = "fluffy";
+
+		User mockUser = new User();
+		mockUser.setId(42); // Set a sample user ID
+		when(userRepository.RequestValue(username, petname)).thenReturn(mockUser);
+
+		int userId = userService.forgotPassword(username, petname);
+		assertEquals(42, userId);
+	}
 }

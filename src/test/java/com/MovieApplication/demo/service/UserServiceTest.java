@@ -20,41 +20,42 @@ import com.MovieApplication.demo.service.impl.UserServiceImpl;
 
 public class UserServiceTest {
 
-    @Mock
-    private UserRepository userRepository;
+	@Mock
+	private UserRepository userRepository;
 
-    @InjectMocks
-    private UserServiceImpl userService;
+	@InjectMocks
+	private UserServiceImpl userService;
 
-    @BeforeEach
-    public void init() {
-        MockitoAnnotations.openMocks(this);
-    }
+	@BeforeEach
+	public void init() {
+		MockitoAnnotations.openMocks(this);
+	}
 
-    @Test
-    public void getAllUsersSuccess() {
-        User user = new User();
-        user.setUsername("admin");
-        user.setPetname("dog");
-        user.setEmail("admin@gmail.com");
-        user.setPassword("admin");
+	@Test
+	public void getAllUsersSuccess() {
+		User user = new User();
+		user.setUsername("admin");
+		user.setPetname("dog");
+		user.setEmail("admin@gmail.com");
+		user.setPassword("admin");
 
-        List<User> userList = new ArrayList<>();
-        userList.add(user);
+		List<User> userList = new ArrayList<>();
+		userList.add(user);
 
-        when(userRepository.findAll()).thenReturn(userList);
+		when(userRepository.findAll()).thenReturn(userList);
 
-        List<User> returnedUserList = userService.getAllUsers();
-        assertEquals(userList, returnedUserList);
-    }
-    @Test
-    void testGetUserById() {
-        int userId = 1;
-        User mockUser = new User();
-        when(userRepository.findById(userId)).thenReturn(Optional.of(mockUser));
+		List<User> returnedUserList = userService.getAllUsers();
+		assertEquals(userList, returnedUserList);
+	}
 
-        User result = userService.getUserById(userId);
-        assertNotNull(result);
-        assertEquals(mockUser, result);
-    }
+	@Test
+	void testGetUserById() {
+		int userId = 1;
+		User mockUser = new User();
+		when(userRepository.findById(userId)).thenReturn(Optional.of(mockUser));
+
+		User result = userService.getUserById(userId);
+		assertNotNull(result);
+		assertEquals(mockUser, result);
+	}
 }

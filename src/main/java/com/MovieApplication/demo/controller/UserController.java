@@ -21,8 +21,9 @@ public class UserController {
 	@Autowired
 	private UserService uService;
 
-	@GetMapping("/getAllUsers") // done
+	@GetMapping("/getAllUsers")
 	public ResponseEntity<?> getAllUsers() {
+
 		List<User> userlist = uService.getAllUsers();
 
 		if (userlist != null) {
@@ -31,7 +32,7 @@ public class UserController {
 		return new ResponseEntity<String>("userlist is empty", HttpStatus.NOT_FOUND);
 	}
 
-	@GetMapping("/findUser/{uid}") // done
+	@GetMapping("/findUser/{uid}")
 	public ResponseEntity<?> findMovie(@PathVariable("uid") int uid) {
 		return new ResponseEntity<User>(uService.getUserById(uid), HttpStatus.OK);
 	}

@@ -18,13 +18,15 @@ public class Movie {
 	private int seatsAvalible;
 	private String showTime;
 	private double price;
-	
-	public Movie() {}
-	public Movie(int movieId,String movieName, String theatreName, int seats, int seatsAvalible, String showTime,
+
+	public Movie() {
+	}
+
+	public Movie(int movieId, String movieName, String theatreName, int seats, int seatsAvalible, String showTime,
 			double price) {
 		super();
-		this.movieId=movieId;
-		
+		this.movieId = movieId;
+
 		this.movieName = movieName;
 		this.theatreName = theatreName;
 		this.seats = seats;
@@ -32,10 +34,6 @@ public class Movie {
 		this.showTime = showTime;
 		this.price = price;
 	}
-
-	
-	
-
 
 	public String getShowTime() {
 		return showTime;
@@ -52,7 +50,6 @@ public class Movie {
 	public void setPrice(double price) {
 		this.price = price;
 	}
-
 
 	public int getMovieId() {
 		return movieId;

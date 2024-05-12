@@ -13,7 +13,6 @@ import com.MovieApplication.demo.service.MovieService;
 
 import jakarta.transaction.Transactional;
 
-
 @Service
 public class MovieServiceImpl implements MovieService {
 	@Autowired
@@ -29,7 +28,7 @@ public class MovieServiceImpl implements MovieService {
 	}
 
 	@Override
-	public Movie addMovie(Movie movie) throws DuplicateMovieIdExceptions  {
+	public Movie addMovie(Movie movie) throws DuplicateMovieIdExceptions {
 		Optional<Movie> opObj = movieRepo.findById(movie.getMovieId());
 
 		if (opObj.isPresent()) {
@@ -37,7 +36,7 @@ public class MovieServiceImpl implements MovieService {
 		}
 		return movieRepo.save(movie);
 	}
-
+	
 	@Override
 	public boolean deleteMovie(int mid) {
 		movieRepo.deleteById(mid);
@@ -53,10 +52,11 @@ public class MovieServiceImpl implements MovieService {
 
 		return null;
 	}
+
 	@Override
 	public List<Movie> getMovieByName(String mname) {
 		List<Movie> movie = movieRepo.findByName(mname);
-		if (movie!=null) {
+		if (movie != null) {
 			return movie;
 		}
 
@@ -65,15 +65,15 @@ public class MovieServiceImpl implements MovieService {
 
 	@Override
 	@Transactional
-	public boolean updateMovie(Movie movie){
-//		Movie movie1 = movieRepo.findById(movie.getMovieId());
+	public boolean updateMovie(Movie movie) {
+
 		Optional<Movie> foundMovie = movieRepo.findById(movie.getMovieId());
 		Movie movie1 = foundMovie.get();
-		
-		if(foundMovie.isEmpty()) {
+
+		if (foundMovie.isEmpty()) {
 			return false;
 		}
-		
+
 		movie1.setSeatsAvalible(movie.getSeatsAvalible());
 		movie1.setMovieName(movie.getMovieName());
 		movie1.setTheatreName(movie.getTheatreName());
@@ -81,8 +81,7 @@ public class MovieServiceImpl implements MovieService {
 		movie1.setPrice(movie.getPrice());
 		movieRepo.save(movie1);
 		return true;
-		
-		
+
 	}
 
 }

@@ -8,6 +8,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Transient;
 import lombok.Data;
 
@@ -24,33 +26,35 @@ public class Ticket {
 	private int transactionId;
 	private int movie_id_fk;
 	private String user_name_fk;
+	private String theatreName;
 	private int no_of_tickets;
 	private String issueAt = formatter.format(new Date());
 	private String showTime;
 	private double totalPrice;
-	
-	public Ticket() {}
-	public Ticket(int movie_id_fk,int no_of_tickets,String showTime,
-			double totalPrice) {
+
+	public Ticket() {
+	}
+
+	public Ticket(int movie_id_fk, int no_of_tickets, String showTime, double totalPrice) {
 		super();
-		
+
 		this.movie_id_fk = movie_id_fk;
-		this.user_name_fk=user_name_fk;
+		this.user_name_fk = user_name_fk;
 		this.no_of_tickets = no_of_tickets;
-		
+
 		this.showTime = showTime;
 		this.totalPrice = totalPrice;
 	}
-	public Ticket(int movie_id_fk,int no_of_tickets) {
-		super();
-		
-		this.movie_id_fk = movie_id_fk;
-		this.user_name_fk=user_name_fk;
-		this.no_of_tickets = no_of_tickets;
-		
-		
-	}
 
+	public Ticket(int movie_id_fk, int no_of_tickets) {
+		super();
+
+		this.movie_id_fk = movie_id_fk;
+		this.user_name_fk = user_name_fk;
+		
+		this.no_of_tickets = no_of_tickets;
+
+	}
 
 	public String getShowTime() {
 		return showTime;
@@ -59,9 +63,11 @@ public class Ticket {
 	public void setShowTime(String showTime) {
 		this.showTime = showTime;
 	}
+
 	public String getUser_name_fk() {
 		return user_name_fk;
 	}
+
 	public void setUser_name_fk(String user_name_fk) {
 		this.user_name_fk = user_name_fk;
 	}
@@ -73,7 +79,6 @@ public class Ticket {
 	public void setTotalPrice(double totalPrice) {
 		this.totalPrice = totalPrice;
 	}
-
 
 	public SimpleDateFormat getFormatter() {
 		return formatter;
@@ -114,15 +119,14 @@ public class Ticket {
 	public void setIssueAt(String issueAt) {
 		this.issueAt = issueAt;
 	}
+
 	@Override
 	public String toString() {
-		return "Ticket [formatter=" + formatter + ", transactionId=" + transactionId + ", movie_id_fk=" + movie_id_fk
-				+ ", user_name_fk=" + user_name_fk + ", no_of_tickets=" + no_of_tickets + ", issueAt=" + issueAt
-				+ ", showTime=" + showTime + ", totalPrice=" + totalPrice + "]";
+		return "Ticket [transactionId=" + transactionId + ", movie_id_fk=" + movie_id_fk + ", user_name_fk="
+				+ user_name_fk + ", theatreName=" + theatreName + ", no_of_tickets=" + no_of_tickets + ", issueAt="
+				+ issueAt + ", showTime=" + showTime + ", totalPrice=" + totalPrice + "]";
 	}
-	
-	
-	
 
 	
+
 }

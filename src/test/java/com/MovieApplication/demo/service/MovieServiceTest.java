@@ -21,77 +21,75 @@ import com.MovieApplication.demo.service.impl.MovieServiceImpl;
 
 public class MovieServiceTest {
 
-    @Mock
-    private MovieRepository movieRepository;
+	@Mock
+	private MovieRepository movieRepository;
 
-    @InjectMocks
-    private MovieServiceImpl movieService;
+	@InjectMocks
+	private MovieServiceImpl movieService;
 
-    @BeforeEach
-    public void init() {
-        MockitoAnnotations.openMocks(this);
-    }
+	@BeforeEach
+	public void init() {
+		MockitoAnnotations.openMocks(this);
+	}
 
-    @Test
-    public void getAllMoviesSuccess() {
-        Movie movie = new Movie();
-        movie.setMovieId(1);
-        movie.setMovieName("2018");
-        movie.setTheatreName("AMB");
-        movie.setSeats(100);
-        movie.setSeatsAvalible(100);
-        movie.setShowTime("09:30AM");
-        movie.setPrice(100);
+	@Test
+	public void getAllMoviesSuccess() {
+		Movie movie = new Movie();
+		movie.setMovieId(1);
+		movie.setMovieName("2018");
+		movie.setTheatreName("AMB");
+		movie.setSeats(100);
+		movie.setSeatsAvalible(100);
+		movie.setShowTime("09:30AM");
+		movie.setPrice(100);
 
-        List<Movie> movieList = new ArrayList<>();
-        movieList.add(movie);
+		List<Movie> movieList = new ArrayList<>();
+		movieList.add(movie);
 
-        when(movieRepository.findAll()).thenReturn(movieList);
+		when(movieRepository.findAll()).thenReturn(movieList);
 
-        List<Movie> returnedMovieList = movieService.getAllMovies();
-        assertEquals(movieList, returnedMovieList);
-    }
+		List<Movie> returnedMovieList = movieService.getAllMovies();
+		assertEquals(movieList, returnedMovieList);
+	}
 
-    @Test
-    public void getMovieByNameSuccess() {
-        Movie movie = new Movie();
-        movie.setMovieId(1);
-        movie.setMovieName("2018");
-        movie.setTheatreName("AMB");
-        movie.setSeats(100);
-        movie.setSeatsAvalible(100);
-        movie.setShowTime("09:30AM");
-        movie.setPrice(100);
+	@Test
+	public void getMovieByNameSuccess() {
+		Movie movie = new Movie();
+		movie.setMovieId(1);
+		movie.setMovieName("2018");
+		movie.setTheatreName("AMB");
+		movie.setSeats(100);
+		movie.setSeatsAvalible(100);
+		movie.setShowTime("09:30AM");
+		movie.setPrice(100);
 
-        List<Movie> movieList = new ArrayList<>();
-        movieList.add(movie);
+		List<Movie> movieList = new ArrayList<>();
+		movieList.add(movie);
 
-        when(movieRepository.findByName("2018")).thenReturn(movieList);
+		when(movieRepository.findByName("2018")).thenReturn(movieList);
 
-        List<Movie> returnedMovieList = movieService.getMovieByName("2018");
-        assertEquals(movieList, returnedMovieList);
-    }
+		List<Movie> returnedMovieList = movieService.getMovieByName("2018");
+		assertEquals(movieList, returnedMovieList);
+	}
 
-    @Test
-    public void addMovieSuccess() throws DuplicateMovieIdExceptions {
-        Movie movie = new Movie();
-        movie.setMovieId(2023);
-        movie.setMovieName("2018");
-        movie.setTheatreName("AMB");
-        movie.setSeats(100);
-        movie.setSeatsAvalible(100);
-        movie.setShowTime("09:30AM");
-        movie.setPrice(100);
+	@Test
+	public void addMovieSuccess() throws DuplicateMovieIdExceptions {
+		Movie movie = new Movie();
+		movie.setMovieId(2023);
+		movie.setMovieName("2018");
+		movie.setTheatreName("AMB");
+		movie.setSeats(100);
+		movie.setSeatsAvalible(100);
+		movie.setShowTime("09:30AM");
+		movie.setPrice(100);
 
-        when(movieRepository.save(movie)).thenReturn(movie);
+		when(movieRepository.save(movie)).thenReturn(movie);
 
-        Movie savedMovie = movieService.addMovie(movie);
-        assertEquals(movie, savedMovie);
-    }
+		Movie savedMovie = movieService.addMovie(movie);
+		assertEquals(movie, savedMovie);
+	}
 
-    
-
-    @Test
+	@Test
     public void deleteMovieSuccess() {
         when(movieRepository.existsById(1)).thenReturn(true);
         
@@ -99,18 +97,19 @@ public class MovieServiceTest {
         boolean isDeleted = movieService.deleteMovie(1);
         assertTrue(isDeleted);
     }
-    @Test
-    void testUpdateMovie() {
-        Movie existingMovie = new Movie();
-        existingMovie.setMovieId(42);
-        Movie updatedMovie = new Movie();
-        updatedMovie.setMovieId(42);
-        updatedMovie.setSeatsAvalible(100);
 
-        when(movieRepository.findById(existingMovie.getMovieId())).thenReturn(Optional.of(existingMovie));
-        when(movieRepository.save(existingMovie)).thenReturn(updatedMovie);
+	@Test
+	void testUpdateMovie() {
+		Movie existingMovie = new Movie();
+		existingMovie.setMovieId(42);
+		Movie updatedMovie = new Movie();
+		updatedMovie.setMovieId(42);
+		updatedMovie.setSeatsAvalible(100);
 
-        assertTrue(movieService.updateMovie(updatedMovie));
-        assertEquals(100, existingMovie.getSeatsAvalible());
-    }
+		when(movieRepository.findById(existingMovie.getMovieId())).thenReturn(Optional.of(existingMovie));
+		when(movieRepository.save(existingMovie)).thenReturn(updatedMovie);
+
+		assertTrue(movieService.updateMovie(updatedMovie));
+		assertEquals(100, existingMovie.getSeatsAvalible());
+	}
 }
