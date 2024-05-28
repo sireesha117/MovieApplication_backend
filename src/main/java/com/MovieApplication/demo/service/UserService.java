@@ -13,6 +13,7 @@ public interface UserService {
 	public boolean loginUser(String username, String password, String userRole);// login
 
 	public User getUserById(int uid);
+	 public User updateUser(int uid, User user);
 
 	public int forgotPassword(String username, String petname);
 
